@@ -7,16 +7,21 @@ startBtn.addEventListener("click", start);
 gameMessage.addEventListener("click", start);
 document.addEventListener("keydown", pressOn);
 document.addEventListener("keyup", pressOff);
+let keys = {};
 
 function start(){
   gameMessage.classList.add("hide");
   startBtn.classList.add("hide");
 }
 
-function pressOn(){
-  console.log("on")
+function pressOn(e){
+  console.log(e.code)
+  keys[e.code] = true
+  console.log(keys)
 }
 
-function pressOff(){
-  console.log("off")
+function pressOff(e){
+  console.log(e.code)
+  keys[e.code] = false
+  console.log(keys)
 }
