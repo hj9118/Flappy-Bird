@@ -18,7 +18,7 @@ body{
   background: skyblue;
 }
 
-.gameBtn{
+.startBtn{
   position: absolute;
   background-color: red;
   width: 50%;
