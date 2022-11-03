@@ -8,10 +8,16 @@ gameMessage.addEventListener("click", start);
 document.addEventListener("keydown", pressOn);
 document.addEventListener("keyup", pressOff);
 let keys = {};
+let bird = document.createElement("div");
+let wing = document.createElement("div");
 
 function start(){
   gameMessage.classList.add("hide");
   startBtn.classList.add("hide");
+  bird.setAttribute("class", "bird");
+  wing.setAttribute("class", "wing");
+  bird.appendChild(wing);
+  gameArea.appendChild(bird);
 }
 
 function pressOn(e){
