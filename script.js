@@ -8,6 +8,7 @@ gameMessage.addEventListener('click', start);
 document.addEventListener('keydown', pressOn);
 document.addEventListener('keyup', pressOff);
 let keys = {};
+let scores = [];
 let player = {
   x: 0,
   y: 0,
@@ -25,6 +26,7 @@ let pipe = {
 function start() {
   player.isplay = true;
   player.score = 0;
+  player.maxScore = 0;
   gameArea.innerHTML = '';
   gameMessage.classList.add('hide');
   startBtn.classList.add('hide');
@@ -44,18 +46,17 @@ function start() {
   pipe.pipeCount = Math.floor(gameArea.offsetWidth / pipe.spaceBetweenRow);
 
   for (let i = 0; i < pipe.pipeCount; i++) {
-    makePipe(pipe.startPos + pipe.spaceBetweenRow);
+    makePipe(pipe.startPos * pipe.spaceBetweenRow);
     pipe.startPos++;
   }
-
   window.requestAnimationFrame(playGame);
 }
 
 function makePipe(pipePos) {
   let totalHeight = gameArea.offsetHeight;
   let totalWidth = gameArea.offsetWidth;
-  let pipeUp = document.createElement('div');
 
+  let pipeUp = document.createElement('div');
   pipeUp.classList.add('pipe');
   pipeUp.height = Math.floor(Math.random() * 350);
   pipeUp.style.height = pipeUp.height + 'px';
@@ -71,8 +72,8 @@ function makePipe(pipePos) {
   pipeDown.classList.add('pipe');
   pipeDown.style.height =
     totalHeight - pipeUp.height - pipe.spaceBetweenCol + 'px';
-  pipeDown.style.left = totalWidth - pipePos + 'px';
-  pipeDown.x = totalWidth - pipePos;
+  pipeDown.style.left = totalWidth + pipePos + 'px';
+  pipeDown.x = totalWidth + pipePos;
   pipeDown.style.bottom = '0px';
   pipeDown.style.backgroundColor = 'black';
   gameArea.appendChild(pipeDown);
@@ -90,7 +91,6 @@ function movePipes(bird) {
     }
     if (isCollide(item, bird)) {
       playGameOver(bird);
-
     }
   });
 
@@ -102,7 +102,7 @@ function movePipes(bird) {
 function isCollide(pipe, bird) {
   let pipeRect = pipe.getBoundingClientRect();
   let birdRect = bird.getBoundingClientRect();
-  return(
+  return (
     pipeRect.bottom > birdRect.top &&
     pipeRect.top < birdRect.bottom &&
     pipeRect.left < birdRect.right &&
@@ -144,7 +144,7 @@ function playGame() {
 
     player.y += player.speed * 2;
     if (player.y > gameArea.offsetHeight) {
-      playGameOver();
+      playGameOver(bird);
     }
 
     bird.style.left = player.x + 'px';
@@ -159,18 +159,15 @@ function playGame() {
 function playGameOver(bird) {
   player.isplay = false;
   gameMessage.classList.remove('hide');
-  gameMessage.innerHTML = `Game Over <br/> 당신의 점수는 ${player.score}점 입니다 <br/> 다시 시작하려면 여기를 누르세요.`;
-  bird.setAttribute("style", "transform:rotate(180deg)")
+  scores.push(player.score)
+  gameMessage.innerHTML = `Game Over <br/> Your score was ${(player.score+1)}. <br/> Your best score was  ${(Math.max.apply(Math, scores)+1)}. <br/><br/> Press here for a new game. `;
+  bird.setAttribute('style', 'transform:rotate(180deg)');
 }
 
 function pressOn(e) {
-  console.log(e.code);
   keys[e.code] = true;
-  console.log(keys);
 }
 
 function pressOff(e) {
-  console.log(e.code);
   keys[e.code] = false;
-  console.log(keys);
 }
