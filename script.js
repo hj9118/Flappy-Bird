@@ -85,7 +85,7 @@ function movePipes(bird) {
   pipes.forEach(function (item) {
     item.x -= player.speed;
     item.style.left = item.x + 'px';
-    if (item.x < 0) {
+    if (item.x < -50) {
       item.parentElement.removeChild(item);
       counter++;
     }
@@ -160,7 +160,7 @@ function playGameOver(bird) {
   player.isplay = false;
   gameMessage.classList.remove('hide');
   scores.push(player.score)
-  gameMessage.innerHTML = `Game Over <br/> Your score was ${(player.score+1)}. <br/> Your best score was  ${(Math.max.apply(Math, scores)+1)}. <br/><br/> Press here for a new game. `;
+  gameMessage.innerHTML = `Game Over <br/> Your score was ${(player.score+1)}. <br/> Your best score was  ${(Math.max(...scores)+1)}. <br/><br/> Press here for a new game. `;
   bird.setAttribute('style', 'transform:rotate(180deg)');
 }
 
